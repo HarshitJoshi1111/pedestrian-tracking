@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.DS_Store
+.tmp/
+# MOT17 frames and cached detections are downloaded/recomputed (python -m src.download, src.detect)
+data/
+models/weights/
+runs/

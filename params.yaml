@@ -1,0 +1,24 @@
+data:
+  url: https://motchallenge.net/data/MOT17.zip
+  # MOT17 stores every sequence three times (one copy per public detector: DPM, FRCNN, SDP);
+  # frames and ground truth are identical, so one copy is enough
+  variant: FRCNN
+  sequences: [MOT17-02, MOT17-04, MOT17-05, MOT17-09, MOT17-10, MOT17-11, MOT17-13]
+  workers: 16
+
+# split by sequence, never by frame: neighbouring frames are almost identical,
+# so a frame-level split would leak the validation scenes into training
+split:
+  train: [MOT17-04, MOT17-05, MOT17-11, MOT17-13]
+  val: [MOT17-02, MOT17-09, MOT17-10]
+
+detect:
+  models: [yolo11n.pt, yolo11s.pt]
+  imgsz: [640, 1280]
+  conf: 0.01        # keep low-score boxes: AP needs the whole precision-recall curve
+  max_det: 300
+
+evaluate:
+  iou_thresholds: [0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95]
+  visibility_bins: [0.0, 0.3, 0.6, 1.01]
+  height_bins: [0, 50, 100, 200, 10000]

@@ -1,0 +1,93 @@
+{
+  "MOT17-02": {
+    "split": "val",
+    "frames": 600,
+    "fps": 30.0,
+    "resolution": "1920x1080",
+    "tracks": 62,
+    "boxes": 18581,
+    "ignore_boxes": 8020,
+    "boxes_per_frame": 31.0,
+    "median_height": 102.0,
+    "share_small": 0.069,
+    "share_occluded": 0.52
+  },
+  "MOT17-04": {
+    "split": "train",
+    "frames": 1050,
+    "fps": 30.0,
+    "resolution": "1920x1080",
+    "tracks": 83,
+    "boxes": 47557,
+    "ignore_boxes": 4798,
+    "boxes_per_frame": 45.3,
+    "median_height": 171.0,
+    "share_small": 0.0,
+    "share_occluded": 0.237
+  },
+  "MOT17-05": {
+    "split": "train",
+    "frames": 837,
+    "fps": 14.0,
+    "resolution": "640x480",
+    "tracks": 133,
+    "boxes": 6917,
+    "ignore_boxes": 339,
+    "boxes_per_frame": 8.3,
+    "median_height": 189.0,
+    "share_small": 0.052,
+    "share_occluded": 0.338
+  },
+  "MOT17-09": {
+    "split": "val",
+    "frames": 525,
+    "fps": 30.0,
+    "resolution": "1920x1080",
+    "tracks": 26,
+    "boxes": 5325,
+    "ignore_boxes": 4036,
+    "boxes_per_frame": 10.1,
+    "median_height": 285.0,
+    "share_small": 0.0,
+    "share_occluded": 0.32
+  },
+  "MOT17-10": {
+    "split": "val",
+    "frames": 654,
+    "fps": 30.0,
+    "resolution": "1920x1080",
+    "tracks": 57,
+    "boxes": 12839,
+    "ignore_boxes": 1846,
+    "boxes_per_frame": 19.6,
+    "median_height": 115.0,
+    "share_small": 0.056,
+    "share_occluded": 0.199
+  },
+  "MOT17-11": {
+    "split": "train",
+    "frames": 900,
+    "fps": 30.0,
+    "resolution": "1920x1080",
+    "tracks": 75,
+    "boxes": 9436,
+    "ignore_boxes": 585,
+    "boxes_per_frame": 10.5,
+    "median_height": 359.0,
+    "share_small": 0.0,
+    "share_occluded": 0.226
+  },
+  "MOT17-13": {
+    "split": "train",
+    "frames": 750,
+    "fps": 25.0,
+    "resolution": "1920x1080",
+    "tracks": 110,
+    "boxes": 11642,
+    "ignore_boxes": 126,
+    "boxes_per_frame": 15.5,
+    "median_height": 84.0,
+    "share_small": 0.116,
+    "share_occluded": 0.169
+  }
+}
