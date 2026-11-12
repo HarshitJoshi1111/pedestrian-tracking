@@ -1,9 +1,13 @@
-"""Stage 2: run pretrained detectors over the validation frames and cache the person boxes.
+"""Stage 2: run pretrained detectors over the frames and cache the person boxes.
 
 Boxes are saved in MOTChallenge format (data/detections/<model>-<imgsz>/<sequence>.txt), so the AP
 evaluation and, later, the tracker can be rerun in seconds without running the detector again.
 The COCO-pretrained models already know the class "person" (class 0); nothing is trained here.
+
+    python -m src.detect                                    all models and sizes on the validation sequences
+    python -m src.detect --split train --imgsz 1280         training sequences (used to tune the tracker)
 """
+import argparse
 import contextlib
 import json
 import time
@@ -56,23 +60,31 @@ def detect_sequence(model, frames_dir: Path, imgsz: int, conf: float, max_det: i
 
 def main() -> None:
     params = load_params()
-    cfg, sequences = params["detect"], params["split"]["val"]
+    cfg = params["detect"]
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--split", default="val", choices=list(params["split"]))
+    parser.add_argument("--models", nargs="+", default=cfg["models"])
+    parser.add_argument("--imgsz", nargs="+", type=int, default=cfg["imgsz"])
+    args = parser.parse_args()
     device = pick_device()
-    for model_name in cfg["models"]:
+    for model_name in args.models:
         model = load_model(model_name)
-        for imgsz in cfg["imgsz"]:
+        for imgsz in args.imgsz:
             out = DETECTIONS / run_name(model_name, imgsz)
             all_times = []
-            for seq in sequences:
+            for seq in params["split"][args.split]:
+                if (out / f"{seq}.txt").exists():
+                    continue  # cached already
                 start = time.time()
                 dets, times = detect_sequence(model, RAW / seq / "img1", imgsz, cfg["conf"], cfg["max_det"], device)
                 write_results(dets, out / f"{seq}.txt")
                 all_times += times[WARMUP:]
                 print(f"{out.name} {seq}: {len(dets)} boxes, {time.time() - start:.0f} s", flush=True)
-            ms = sum(all_times) / len(all_times)
-            timing = {"model": model_name, "imgsz": imgsz, "device": device, "frames": len(all_times),
-                      "ms_per_frame": round(ms, 2), "fps": round(1000 / ms, 1)}
-            (out / "timing.json").write_text(json.dumps(timing, indent=2) + "\n")
+            if all_times and args.split == "val":  # speed is reported on the validation frames
+                ms = sum(all_times) / len(all_times)
+                timing = {"model": model_name, "imgsz": imgsz, "device": device, "frames": len(all_times),
+                          "ms_per_frame": round(ms, 2), "fps": round(1000 / ms, 1)}
+                (out / "timing.json").write_text(json.dumps(timing, indent=2) + "\n")
 
 
 if __name__ == "__main__":
