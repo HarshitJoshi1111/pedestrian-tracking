@@ -1,11 +1,13 @@
-# Detection baseline (COCO-pretrained YOLO, class person, no training)
+# Detection on the validation sequences
 
-Validation sequences, boxes with IoU >= 0.5 count as found. F1, precision and recall at the confidence cut-off with the best F1. FPS = pre-processing + inference + NMS per frame.
+COCO-pretrained YOLO (class person); runs named *-mot17 are fine-tuned on the training sequences. Boxes with IoU >= 0.5 count as found. F1, precision and recall at the confidence cut-off with the best F1. FPS = pre-processing + inference + NMS per frame.
 
 | Run | AP50 | AP75 | AP50:95 | Max recall | Conf | Precision | Recall | F1 | ms/frame | FPS |
 |---|---|---|---|---|---|---|---|---|---|---|
 | yolo11n-640 | 0.487 | 0.219 | 0.245 | 0.587 | 0.11 | 0.695 | 0.448 | 0.545 | 23.42 | 42.7 |
 | yolo11n-1280 | 0.593 | 0.282 | 0.305 | 0.690 | 0.21 | 0.793 | 0.535 | 0.639 | 42.1 | 23.8 |
+| yolo11n-mot17-960 | 0.497 | 0.237 | 0.256 | 0.586 | 0.16 | 0.715 | 0.455 | 0.556 | 26.69 | 37.5 |
+| yolo11n-mot17-1280 | 0.569 | 0.270 | 0.294 | 0.668 | 0.19 | 0.758 | 0.509 | 0.609 | 42.13 | 23.7 |
 | yolo11s-640 | 0.533 | 0.255 | 0.274 | 0.616 | 0.10 | 0.729 | 0.501 | 0.594 | 31.09 | 32.2 |
 | yolo11s-1280 | 0.596 | 0.293 | 0.312 | 0.680 | 0.23 | 0.819 | 0.546 | 0.655 | 84.85 | 11.8 |
 
@@ -16,6 +18,8 @@ Validation sequences, boxes with IoU >= 0.5 count as found. F1, precision and re
 | GT boxes | 13,925 | 5,109 | 17,711 |
 | yolo11n-640 | 0.117 | 0.386 | 0.725 |
 | yolo11n-1280 | 0.163 | 0.484 | 0.842 |
+| yolo11n-mot17-960 | 0.128 | 0.396 | 0.729 |
+| yolo11n-mot17-1280 | 0.159 | 0.476 | 0.794 |
 | yolo11s-640 | 0.147 | 0.450 | 0.794 |
 | yolo11s-1280 | 0.171 | 0.511 | 0.851 |
 
@@ -26,6 +30,8 @@ Validation sequences, boxes with IoU >= 0.5 count as found. F1, precision and re
 | GT boxes | 2,001 | 11,634 | 12,968 | 10,142 |
 | yolo11n-640 | 0.019 | 0.174 | 0.510 | 0.767 |
 | yolo11n-1280 | 0.113 | 0.360 | 0.567 | 0.777 |
+| yolo11n-mot17-960 | 0.024 | 0.222 | 0.485 | 0.769 |
+| yolo11n-mot17-1280 | 0.074 | 0.329 | 0.544 | 0.758 |
 | yolo11s-640 | 0.054 | 0.281 | 0.546 | 0.783 |
 | yolo11s-1280 | 0.130 | 0.368 | 0.581 | 0.787 |
 
@@ -35,5 +41,7 @@ Validation sequences, boxes with IoU >= 0.5 count as found. F1, precision and re
 |---|---|---|---|
 | yolo11n-640 | 0.387 | 0.691 | 0.544 |
 | yolo11n-1280 | 0.496 | 0.721 | 0.674 |
+| yolo11n-mot17-960 | 0.323 | 0.769 | 0.627 |
+| yolo11n-mot17-1280 | 0.431 | 0.772 | 0.672 |
 | yolo11s-640 | 0.424 | 0.712 | 0.614 |
 | yolo11s-1280 | 0.503 | 0.730 | 0.685 |

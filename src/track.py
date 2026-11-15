@@ -2,6 +2,7 @@
 
     python -m src.track          the experiments from params.yaml on the validation sequences
     python -m src.track --tune   grid search of tracker settings on the training sequences
+                                 (--apply writes the best ones to params.yaml)
 
 The tracker settings are tuned on the training sequences and only then run on the validation
 sequences, so the validation scores are not the result of picking the best of many tries on them.
@@ -10,6 +11,7 @@ Tracks go to data/tracks/<experiment>/<sequence>.txt (MOTChallenge format).
 import argparse
 import itertools
 import json
+import re
 import time
 from dataclasses import fields
 
@@ -81,7 +83,7 @@ def score(results: dict[str, pd.DataFrame], gt: dict) -> dict:
     return combine({seq: evaluate_sequence(tracks, *gt[seq]) for seq, tracks in results.items()})
 
 
-def tune(params: dict) -> None:
+def tune(params: dict) -> dict:
     track_params, cfg = params["track"], params["track"]["tune"]
     gt = load_split(params["split"]["train"])
     names, grid = list(cfg["grid"]), list(itertools.product(*cfg["grid"].values()))
@@ -103,13 +105,28 @@ def tune(params: dict) -> None:
         lines.append("| " + " | ".join(str(r[n]) for n in names) +
                      f" | {r['mota']:.3f} | {r['idf1']:.3f} | {r['id_switches']} |")
     (REPORTS / "tracker_tuning.md").write_text("\n".join(lines) + "\n")
-    print("best:", table.iloc[0].to_dict())
+    best = {n: table.iloc[0][n].item() for n in names}
+    print("best:", best)
+    return best
+
+
+def apply_settings(text: str, values: dict) -> str:
+    """Write tuned values into the track.tracker block of params.yaml, keeping the comments."""
+    for key, value in values.items():
+        value = int(value) if float(value).is_integer() and key == "track_buffer" else value
+        text, n = re.subn(rf"^(    {key}:\s*)[^#\n]*?(\s*(#.*)?)$", rf"\g<1>{value}\g<2>", text, count=1, flags=re.M)
+        if n != 1:
+            raise KeyError(f"{key} not found in the tracker settings")
+    return text
 
 
 def experiments(params: dict) -> None:
     track_params = params["track"]
     for name, overrides in track_params["experiments"].items():
         config, detector, gap = settings(track_params, overrides)
+        if not (DETECTIONS / detector).is_dir():
+            print(f"{name}: skipped, no detections in {DETECTIONS / detector}")
+            continue
         results, ms = run(params["split"]["val"], config, detector, gap)
         for seq, tracks in results.items():
             write_results(tracks, TRACKS / name / f"{seq}.txt")
@@ -122,9 +139,14 @@ def experiments(params: dict) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--tune", action="store_true", help="grid search on the training sequences")
+    parser.add_argument("--apply", action="store_true", help="with --tune: write the best settings to params.yaml")
+    args = parser.parse_args()
     params = load_params()
-    if parser.parse_args().tune:
-        tune(params)
+    if args.tune:
+        best = tune(params)
+        if args.apply:
+            path = ROOT / "params.yaml"
+            path.write_text(apply_settings(path.read_text(), best))
     else:
         experiments(params)
 

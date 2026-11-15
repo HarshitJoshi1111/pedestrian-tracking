@@ -52,8 +52,9 @@ def evaluate_run(run_dir: Path, gt: dict, cfg: dict) -> dict:
 
 
 def markdown(results: dict) -> str:
-    lines = ["# Detection baseline (COCO-pretrained YOLO, class person, no training)", "",
-             "Validation sequences, boxes with IoU >= 0.5 count as found. F1, precision and recall at the confidence "
+    lines = ["# Detection on the validation sequences", "",
+             "COCO-pretrained YOLO (class person); runs named *-mot17 are fine-tuned on the training sequences. "
+             "Boxes with IoU >= 0.5 count as found. F1, precision and recall at the confidence "
              "cut-off with the best F1. FPS = pre-processing + inference + NMS per frame.", "",
              "| Run | AP50 | AP75 | AP50:95 | Max recall | Conf | Precision | Recall | F1 | ms/frame | FPS |",
              "|---|---|---|---|---|---|---|---|---|---|---|"]

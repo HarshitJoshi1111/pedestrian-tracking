@@ -1,0 +1,194 @@
+[
+  {
+    "high_thresh": 0.4,
+    "match_thresh": 0.9,
+    "track_buffer": 30,
+    "mota": 0.46652636594663277,
+    "idf1": 0.5891636312141548,
+    "id_switches": 216
+  },
+  {
+    "high_thresh": 0.4,
+    "match_thresh": 0.9,
+    "track_buffer": 60,
+    "mota": 0.4657322109275731,
+    "idf1": 0.5804733635124764,
+    "id_switches": 225
+  },
+  {
+    "high_thresh": 0.3,
+    "match_thresh": 0.9,
+    "track_buffer": 30,
+    "mota": 0.4719530919102075,
+    "idf1": 0.577348444512056,
+    "id_switches": 247
+  },
+  {
+    "high_thresh": 0.3,
+    "match_thresh": 0.9,
+    "track_buffer": 60,
+    "mota": 0.47035154595510376,
+    "idf1": 0.5693099709613095,
+    "id_switches": 249
+  },
+  {
+    "high_thresh": 0.4,
+    "match_thresh": 0.8,
+    "track_buffer": 30,
+    "mota": 0.4667249047013977,
+    "idf1": 0.5664904787187676,
+    "id_switches": 245
+  },
+  {
+    "high_thresh": 0.3,
+    "match_thresh": 0.8,
+    "track_buffer": 60,
+    "mota": 0.47232369758576875,
+    "idf1": 0.5664252413613008,
+    "id_switches": 290
+  },
+  {
+    "high_thresh": 0.4,
+    "match_thresh": 0.8,
+    "track_buffer": 60,
+    "mota": 0.46553367217280817,
+    "idf1": 0.5661092724386063,
+    "id_switches": 247
+  },
+  {
+    "high_thresh": 0.3,
+    "match_thresh": 0.8,
+    "track_buffer": 30,
+    "mota": 0.4725090004235494,
+    "idf1": 0.5648164554524094,
+    "id_switches": 290
+  },
+  {
+    "high_thresh": 0.5,
+    "match_thresh": 0.9,
+    "track_buffer": 60,
+    "mota": 0.4502726598898772,
+    "idf1": 0.555624928117247,
+    "id_switches": 181
+  },
+  {
+    "high_thresh": 0.5,
+    "match_thresh": 0.9,
+    "track_buffer": 30,
+    "mota": 0.4510403430749682,
+    "idf1": 0.5531409923607505,
+    "id_switches": 180
+  },
+  {
+    "high_thresh": 0.5,
+    "match_thresh": 0.8,
+    "track_buffer": 60,
+    "mota": 0.44796961033460403,
+    "idf1": 0.5501473343623352,
+    "id_switches": 204
+  },
+  {
+    "high_thresh": 0.5,
+    "match_thresh": 0.8,
+    "track_buffer": 30,
+    "mota": 0.44808873358746293,
+    "idf1": 0.5489576439444077,
+    "id_switches": 212
+  },
+  {
+    "high_thresh": 0.4,
+    "match_thresh": 0.7,
+    "track_buffer": 60,
+    "mota": 0.4639850698856417,
+    "idf1": 0.537255152989374,
+    "id_switches": 363
+  },
+  {
+    "high_thresh": 0.4,
+    "match_thresh": 0.7,
+    "track_buffer": 30,
+    "mota": 0.46476598898771704,
+    "idf1": 0.5370394125004009,
+    "id_switches": 354
+  },
+  {
+    "high_thresh": 0.5,
+    "match_thresh": 0.7,
+    "track_buffer": 60,
+    "mota": 0.44352234222786957,
+    "idf1": 0.5341222550939623,
+    "id_switches": 258
+  },
+  {
+    "high_thresh": 0.5,
+    "match_thresh": 0.7,
+    "track_buffer": 30,
+    "mota": 0.4437738246505718,
+    "idf1": 0.5334279275519572,
+    "id_switches": 258
+  },
+  {
+    "high_thresh": 0.3,
+    "match_thresh": 0.7,
+    "track_buffer": 60,
+    "mota": 0.4616158407454468,
+    "idf1": 0.532143170523528,
+    "id_switches": 489
+  },
+  {
+    "high_thresh": 0.3,
+    "match_thresh": 0.7,
+    "track_buffer": 30,
+    "mota": 0.46210556967386696,
+    "idf1": 0.5287662918476872,
+    "id_switches": 479
+  },
+  {
+    "high_thresh": 0.6,
+    "match_thresh": 0.9,
+    "track_buffer": 60,
+    "mota": 0.4068720880982635,
+    "idf1": 0.5267032420692723,
+    "id_switches": 137
+  },
+  {
+    "high_thresh": 0.6,
+    "match_thresh": 0.9,
+    "track_buffer": 30,
+    "mota": 0.4072426937738246,
+    "idf1": 0.5259021329108938,
+    "id_switches": 135
+  },
+  {
+    "high_thresh": 0.6,
+    "match_thresh": 0.8,
+    "track_buffer": 60,
+    "mota": 0.4002144218551461,
+    "idf1": 0.5247618712874768,
+    "id_switches": 145
+  },
+  {
+    "high_thresh": 0.6,
+    "match_thresh": 0.8,
+    "track_buffer": 30,
+    "mota": 0.40058502753070735,
+    "idf1": 0.5241307549183002,
+    "id_switches": 136
+  },
+  {
+    "high_thresh": 0.6,
+    "match_thresh": 0.7,
+    "track_buffer": 60,
+    "mota": 0.3964818932655655,
+    "idf1": 0.515656641581847,
+    "id_switches": 164
+  },
+  {
+    "high_thresh": 0.6,
+    "match_thresh": 0.7,
+    "track_buffer": 30,
+    "mota": 0.3965480728504871,
+    "idf1": 0.515431934620362,
+    "id_switches": 162
+  }
+]

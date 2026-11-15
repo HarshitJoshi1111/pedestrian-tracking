@@ -1,0 +1,83 @@
+{
+  "model": "yolo11n.pt",
+  "name": "yolo11n-mot17",
+  "device": "mps",
+  "imgsz": 800,
+  "epochs": 10,
+  "minutes": 19.4,
+  "best_epoch": 10,
+  "holdout_map50": 0.9113,
+  "holdout_map50_95": 0.6223,
+  "curve": [
+    {
+      "epoch": 1,
+      "train_box_loss": 1.4572,
+      "holdout_box_loss": 1.5225,
+      "map50": 0.8341,
+      "map50_95": 0.4784
+    },
+    {
+      "epoch": 2,
+      "train_box_loss": 1.3648,
+      "holdout_box_loss": 1.4369,
+      "map50": 0.873,
+      "map50_95": 0.5566
+    },
+    {
+      "epoch": 3,
+      "train_box_loss": 1.3412,
+      "holdout_box_loss": 1.4396,
+      "map50": 0.8468,
+      "map50_95": 0.5117
+    },
+    {
+      "epoch": 4,
+      "train_box_loss": 1.2853,
+      "holdout_box_loss": 1.358,
+      "map50": 0.8935,
+      "map50_95": 0.5695
+    },
+    {
+      "epoch": 5,
+      "train_box_loss": 1.2754,
+      "holdout_box_loss": 1.3386,
+      "map50": 0.8948,
+      "map50_95": 0.5819
+    },
+    {
+      "epoch": 6,
+      "train_box_loss": 1.1858,
+      "holdout_box_loss": 1.3204,
+      "map50": 0.899,
+      "map50_95": 0.5986
+    },
+    {
+      "epoch": 7,
+      "train_box_loss": 1.148,
+      "holdout_box_loss": 1.3325,
+      "map50": 0.892,
+      "map50_95": 0.5775
+    },
+    {
+      "epoch": 8,
+      "train_box_loss": 1.0993,
+      "holdout_box_loss": 1.2887,
+      "map50": 0.9104,
+      "map50_95": 0.6108
+    },
+    {
+      "epoch": 9,
+      "train_box_loss": 1.0782,
+      "holdout_box_loss": 1.2738,
+      "map50": 0.9061,
+      "map50_95": 0.6138
+    },
+    {
+      "epoch": 10,
+      "train_box_loss": 1.0288,
+      "holdout_box_loss": 1.2401,
+      "map50": 0.9113,
+      "map50_95": 0.6223
+    }
+  ]
+}

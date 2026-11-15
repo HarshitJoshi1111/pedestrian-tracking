@@ -27,10 +27,10 @@ track:
   detector: yolo11s-1280      # cached detection run the tracker reads
   interpolate_gap: 20         # fill gaps of up to 20 frames inside a track (offline); 0 = off
   tracker:                    # see src/tracker.py; high_thresh, match_thresh, track_buffer tuned on train
-    high_thresh: 0.5
+    high_thresh: 0.4
     low_thresh: 0.1
     new_track_thresh: null    # null: high_thresh + 0.1
-    match_thresh: 0.8
+    match_thresh: 0.9
     low_match_thresh: 0.5
     tentative_match_thresh: 0.7
     track_buffer: 30
@@ -49,7 +49,21 @@ track:
     bytetrack: {interpolate_gap: 0}
     bytetrack+interp: {}
     bytetrack+interp-yolo11n: {detector: yolo11n-1280}
+    bytetrack+interp-finetuned: {detector: yolo11n-mot17-1280}
   reference:                  # python -m src.reference_track (library ByteTrack, default settings)
     model: yolo11s.pt
     imgsz: 1280
     conf: 0.1
+
+# fine-tuning the detector on the training sequences (python -m src.prepare_yolo, python -m src.train)
+train:
+  model: yolo11n.pt           # COCO-pretrained start; the class head is replaced by one class, person
+  name: yolo11n-mot17         # saved as models/weights/yolo11n-mot17.pt
+  imgsz: 800                  # training size; larger sizes run out of memory on an 8 GB M1
+  epochs: 10
+  batch: 4
+  frame_step: 4               # every 4th frame: neighbouring frames are near duplicates
+  holdout: 0.2                # last 20% of each training sequence, for model selection during training
+  gap: 30                     # frames dropped between the training part and the holdout part
+  extra_classes: [2, 7]       # people on vehicles and static people are labelled as persons too
+  seed: 0

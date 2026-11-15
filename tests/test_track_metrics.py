@@ -69,3 +69,14 @@ def test_interpolate_fills_short_gaps_only():
     filled = interpolate(tracks, max_gap=5)
     assert filled["frame"].tolist() == [1, 2, 3, 4, 5, 30]
     assert filled.loc[filled["frame"] == 3, "x"].item() == pytest.approx(3.0)
+
+
+def test_tuned_settings_are_written_into_the_tracker_block_only():
+    from src.track import apply_settings
+
+    text = ("track:\n  tracker:\n    high_thresh: 0.5\n    track_buffer: 30       # frames\n"
+            "  tune:\n    grid:\n      high_thresh: [0.3, 0.4]\n")
+    out = apply_settings(text, {"high_thresh": 0.4, "track_buffer": 60.0})
+    assert "    high_thresh: 0.4\n" in out
+    assert "    track_buffer: 60       # frames\n" in out
+    assert "      high_thresh: [0.3, 0.4]\n" in out
