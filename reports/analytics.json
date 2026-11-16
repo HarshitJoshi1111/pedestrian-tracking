@@ -1,0 +1,68 @@
+{
+  "MOT17-02": {
+    "split": "val",
+    "line": [
+      [
+        960,
+        450
+      ],
+      [
+        960,
+        1080
+      ]
+    ],
+    "true_in": 5,
+    "true_out": 16,
+    "counted_in": 2,
+    "counted_out": 10,
+    "count_error": 0.429,
+    "precision": 0.833,
+    "recall": 0.476,
+    "mean_people": 31.0,
+    "crowd_mae": 16.49
+  },
+  "MOT17-09": {
+    "split": "val",
+    "line": [
+      [
+        1100,
+        500
+      ],
+      [
+        1100,
+        1080
+      ]
+    ],
+    "true_in": 2,
+    "true_out": 10,
+    "counted_in": 3,
+    "counted_out": 9,
+    "count_error": 0.0,
+    "precision": 0.917,
+    "recall": 0.917,
+    "mean_people": 10.1,
+    "crowd_mae": 1.36
+  },
+  "MOT17-04": {
+    "split": "train",
+    "line": [
+      [
+        0,
+        650
+      ],
+      [
+        1920,
+        650
+      ]
+    ],
+    "true_in": 8,
+    "true_out": 5,
+    "counted_in": 9,
+    "counted_out": 6,
+    "count_error": 0.154,
+    "precision": 0.867,
+    "recall": 1.0,
+    "mean_people": 45.3,
+    "crowd_mae": 14.47
+  }
+}

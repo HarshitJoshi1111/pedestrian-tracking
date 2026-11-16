@@ -67,3 +67,22 @@ train:
   gap: 30                     # frames dropped between the training part and the holdout part
   extra_classes: [2, 7]       # people on vehicles and static people are labelled as persons too
   seed: 0
+
+# people counting, crowd size and heatmaps on the static-camera sequences (python -m src.analytics)
+analytics:
+  sequences:                  # counting line from point a to point b in pixels; for a line drawn top to bottom,
+                              # walking right to left counts as "in"
+    MOT17-02: {line: [[960, 450], [960, 1080]]}
+    MOT17-09: {line: [[1100, 500], [1100, 1080]]}
+    MOT17-04: {line: [[0, 650], [1920, 650]]}
+  smooth: 5                   # moving average of the feet position over 5 frames
+  min_gap: 15                 # a crossing back within 15 frames cancels both
+  match_window: 15            # a counted crossing is correct within +-15 frames of a true one
+  render:                     # python -m src.render [--gif]
+    sequence: MOT17-09
+    fps: 15
+    video_width: 960
+    trail: 30
+    gif_frames: [100, 400]
+    gif_step: 3
+    gif_width: 480

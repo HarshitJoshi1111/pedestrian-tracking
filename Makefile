@@ -1,4 +1,4 @@
-.PHONY: download stats detect evaluate figures baseline detect-train tune track reference evaluate-track tracking prepare-yolo train detect-finetuned finetune test lint
+.PHONY: download stats detect evaluate figures baseline detect-train tune track reference evaluate-track tracking prepare-yolo train detect-finetuned finetune analytics render test lint
 
 download:
 	python -m src.download
@@ -44,6 +44,12 @@ detect-finetuned:
 	python -m src.detect --models yolo11n-mot17.pt --imgsz 1280
 
 finetune: prepare-yolo train detect-finetuned evaluate track evaluate-track
+
+analytics:
+	python -m src.analytics
+
+render:
+	python -m src.render --gif
 
 test:
 	pytest -q
