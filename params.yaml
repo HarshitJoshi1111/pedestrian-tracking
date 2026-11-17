@@ -86,3 +86,15 @@ analytics:
     gif_frames: [100, 400]
     gif_step: 3
     gif_width: 480
+
+# deployment: ONNX export, speed, live app (python -m src.deploy export|detect|benchmark, python -m src.app)
+deploy:
+  models: [yolo11n.pt, yolo11s.pt]
+  imgsz: [736, 1280]          # height, width: 16:9 video at 1280 px wide, height padded to a multiple of 32
+  conf: 0.01                  # for the AP check of the ONNX models (as in detect)
+  app_conf: 0.1               # live use: the tracker ignores boxes below its low threshold (0.1) anyway
+  app_model: models/weights/yolo11n-1280.onnx   # nano: about the accuracy of the small model at 1280 px, twice as fast
+  benchmark:
+    sequence: MOT17-09
+    frames: 100
+    warmup: 10

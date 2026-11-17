@@ -1,4 +1,4 @@
-.PHONY: download stats detect evaluate figures baseline detect-train tune track reference evaluate-track tracking prepare-yolo train detect-finetuned finetune analytics render test lint
+.PHONY: download stats detect evaluate figures baseline detect-train tune track reference evaluate-track tracking prepare-yolo train detect-finetuned finetune analytics render export detect-onnx benchmark deploy live test lint
 
 download:
 	python -m src.download
@@ -50,6 +50,20 @@ analytics:
 
 render:
 	python -m src.render --gif
+
+export:
+	python -m src.deploy export
+
+detect-onnx:
+	python -m src.deploy detect
+
+benchmark:
+	python -m src.deploy benchmark
+
+deploy: export detect-onnx evaluate benchmark
+
+live:
+	python -m src.app data/raw/MOT17-09/img1/%06d.jpg --line 1100 500 1100 1080 --out data/demo/live.mp4
 
 test:
 	pytest -q

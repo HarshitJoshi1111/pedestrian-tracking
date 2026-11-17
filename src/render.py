@@ -27,8 +27,10 @@ def color(track_id: int) -> tuple[int, int, int]:
 
 
 def draw_frame(image, rows, trails, line, counts) -> None:
-    a, b = (tuple(int(v) for v in p) for p in line)
-    cv2.line(image, a, b, (255, 255, 255), 4, cv2.LINE_AA)
+    """Boxes, IDs and trails of the tracked people; the counting line and the counts if a line is given."""
+    if line is not None:
+        a, b = (tuple(int(v) for v in p) for p in line)
+        cv2.line(image, a, b, (255, 255, 255), 4, cv2.LINE_AA)
     for _, r in rows.iterrows():
         x, y, w, h, tid = int(r.x), int(r.y), int(r.w), int(r.h), int(r.id)
         c = color(tid)
@@ -38,7 +40,7 @@ def draw_frame(image, rows, trails, line, counts) -> None:
             cv2.polylines(image, [np.array(trail, np.int32)], False, c, 3, cv2.LINE_AA)
         cv2.rectangle(image, (x, y), (x + w, y + h), c, 3)
         cv2.putText(image, str(tid), (x, max(y - 8, 20)), cv2.FONT_HERSHEY_SIMPLEX, 1.0, c, 3, cv2.LINE_AA)
-    text = f"in {counts[1]}   out {counts[-1]}   people {len(rows)}"
+    text = (f"in {counts[1]}   out {counts[-1]}   " if line is not None else "") + f"people {len(rows)}"
     cv2.rectangle(image, (20, 20), (40 + 23 * len(text), 85), (0, 0, 0), -1)
     cv2.putText(image, text, (35, 68), cv2.FONT_HERSHEY_SIMPLEX, 1.4, (255, 255, 255), 3, cv2.LINE_AA)
 

@@ -14,6 +14,7 @@ does not stay on the same spot of the street) the tracker is run and then:
 Writes reports/analytics.json, reports/analytics.md and figures in reports/figures/.
 """
 import json
+from collections import defaultdict, deque
 
 import cv2
 import numpy as np
@@ -63,6 +64,40 @@ def crossings(tracks: pd.DataFrame, line, smooth: int = 5, min_gap: int = 15) ->
         else:
             kept.append(event)
     return pd.DataFrame(kept, columns=["id", "frame", "direction"])
+
+
+class LineCounter:
+    """Online version of crossings() for a live video: trailing average of the feet position instead of a
+    centred one (the future is not known yet); a crossing counts as soon as it happens and is taken back if
+    the same person crosses back within min_gap frames."""
+
+    def __init__(self, line, smooth: int = 5, min_gap: int = 15):
+        self.a, self.b = np.asarray(line[0], float), np.asarray(line[1], float)
+        self.min_gap = min_gap
+        self.history: dict[int, deque] = defaultdict(lambda: deque(maxlen=smooth))
+        self.last: dict[int, tuple[np.ndarray, int]] = {}  # track id -> (smoothed feet, side)
+        self.last_event: dict[int, tuple[int, int]] = {}  # track id -> (frame, direction)
+        self.counts = {1: 0, -1: 0}
+
+    def update(self, frame: int, tracks) -> None:
+        """tracks: (track id, box x, y, w, h) of the people tracked in this frame."""
+        for track_id, (x, y, w, h) in tracks:
+            self.history[track_id].append((x + w / 2, y + h))
+            p = np.mean(self.history[track_id], axis=0)
+            side = 1 if _side(p[0], p[1], self.a, self.b) >= 0 else -1
+            if track_id in self.last:
+                q, previous = self.last[track_id]
+                if side != previous and _side(*self.a, q, p) * _side(*self.b, q, p) < 0:
+                    self._count(track_id, frame, side)
+            self.last[track_id] = (p, side)
+
+    def _count(self, track_id: int, frame: int, direction: int) -> None:
+        event = self.last_event.pop(track_id, None)
+        if event and event[1] == -direction and frame - event[0] <= self.min_gap:
+            self.counts[event[1]] -= 1  # back and forth: take the first crossing back, do not count this one
+        else:
+            self.counts[direction] += 1
+            self.last_event[track_id] = (frame, direction)
 
 
 def match_events(predicted: pd.DataFrame, truth: pd.DataFrame, window: int) -> int:

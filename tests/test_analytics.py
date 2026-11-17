@@ -43,3 +43,23 @@ def test_event_matching_and_report():
     r = count_report(predicted, truth, window=15)
     assert (r["true_in"], r["counted_in"], r["count_error"]) == (2, 3, 0.0)
     assert r["precision"] == pytest.approx(0.333) and r["recall"] == pytest.approx(0.333)
+
+
+def run_counter(df, **kwargs):
+    from src.analytics import LineCounter
+
+    counter = LineCounter(LINE, **kwargs)
+    for frame, g in df.groupby("frame"):
+        counter.update(frame, [(r.id, (r.x, r.y, r.w, r.h)) for r in g.itertuples()])
+    return counter.counts
+
+
+def test_live_counter_matches_offline_counting():
+    df = tracks(walk(1, range(50, 150, 5)), walk(2, range(150, 50, -5)), walk(3, range(40, 160, 4), start=5))
+    offline = crossings(df, LINE, smooth=1)
+    assert run_counter(df, smooth=1) == {1: int((offline["direction"] == 1).sum()), -1: int((offline["direction"] == -1).sum())}
+
+
+def test_live_counter_takes_back_and_forth_back():
+    df = tracks(walk(1, [90, 95, 105, 110, 104, 96, 90, 85]))
+    assert run_counter(df, smooth=1, min_gap=15) == {1: 0, -1: 0}

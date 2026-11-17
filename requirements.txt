@@ -1,5 +1,8 @@
 ultralytics>=8.3
 lap>=0.5
+onnx>=1.16
+onnxslim>=0.1
+onnxruntime>=1.18
 numpy>=1.26
 pandas>=2.2
 scipy>=1.13
