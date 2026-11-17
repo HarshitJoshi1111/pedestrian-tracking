@@ -1,0 +1,82 @@
+{
+  "input": [
+    736,
+    1280
+  ],
+  "results": [
+    {
+      "model": "yolo11n.pt",
+      "runtime": "PyTorch cpu",
+      "ms_mean": 96.2,
+      "ms_p50": 95.7,
+      "ms_p95": 99.1,
+      "fps": 10.4
+    },
+    {
+      "model": "yolo11n.pt",
+      "runtime": "PyTorch mps",
+      "ms_mean": 44.3,
+      "ms_p50": 44.1,
+      "ms_p95": 47.1,
+      "fps": 22.6
+    },
+    {
+      "model": "yolo11n.pt",
+      "runtime": "ONNX Runtime CPU",
+      "ms_mean": 103.8,
+      "ms_p50": 103.7,
+      "ms_p95": 106.7,
+      "fps": 9.6
+    },
+    {
+      "model": "yolo11n.pt",
+      "runtime": "ONNX Runtime CoreML",
+      "ms_mean": 30.7,
+      "ms_p50": 30.7,
+      "ms_p95": 31.2,
+      "fps": 32.6
+    },
+    {
+      "model": "yolo11s.pt",
+      "runtime": "PyTorch cpu",
+      "ms_mean": 213.0,
+      "ms_p50": 212.9,
+      "ms_p95": 219.1,
+      "fps": 4.7
+    },
+    {
+      "model": "yolo11s.pt",
+      "runtime": "PyTorch mps",
+      "ms_mean": 88.9,
+      "ms_p50": 88.9,
+      "ms_p95": 92.4,
+      "fps": 11.2
+    },
+    {
+      "model": "yolo11s.pt",
+      "runtime": "ONNX Runtime CPU",
+      "ms_mean": 399.6,
+      "ms_p50": 400.3,
+      "ms_p95": 408.4,
+      "fps": 2.5
+    },
+    {
+      "model": "yolo11s.pt",
+      "runtime": "ONNX Runtime CoreML",
+      "ms_mean": 55.6,
+      "ms_p50": 55.3,
+      "ms_p95": 60.4,
+      "fps": 18.0
+    }
+  ],
+  "sizes": {
+    "yolo11n.pt": {
+      "pt_mb": 5.6,
+      "onnx_mb": 11.0
+    },
+    "yolo11s.pt": {
+      "pt_mb": 19.3,
+      "onnx_mb": 38.3
+    }
+  }
+}

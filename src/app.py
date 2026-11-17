@@ -73,7 +73,8 @@ def main() -> None:
         writer.release()
     capture.release()
     cv2.destroyAllWindows()
-    summary = f"{frame} frames in {seconds:.1f} s ({frame / max(seconds, 1e-9):.1f} FPS incl. reading and drawing)"
+    runtime = detector.session.get_providers()[0].replace("ExecutionProvider", "")
+    summary = f"{frame} frames in {seconds:.1f} s ({frame / max(seconds, 1e-9):.1f} FPS incl. reading and drawing, {runtime})"
     if counter:
         summary += f", counted in {counter.counts[1]}, out {counter.counts[-1]}"
     print(summary)

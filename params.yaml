@@ -50,6 +50,7 @@ track:
     bytetrack+interp: {}
     bytetrack+interp-yolo11n: {detector: yolo11n-1280}
     bytetrack+interp-finetuned: {detector: yolo11n-mot17-1280}
+    bytetrack+interp-nms07: {detector: yolo11s-onnx-iou07-1280}
   reference:                  # python -m src.reference_track (library ByteTrack, default settings)
     model: yolo11s.pt
     imgsz: 1280
@@ -92,6 +93,7 @@ deploy:
   models: [yolo11n.pt, yolo11s.pt]
   imgsz: [736, 1280]          # height, width: 16:9 video at 1280 px wide, height padded to a multiple of 32
   conf: 0.01                  # for the AP check of the ONNX models (as in detect)
+  nms_iou: [0.5, 0.7]         # 0.5: as the PyTorch runs (export check); 0.7 keeps more overlapping people
   app_conf: 0.1               # live use: the tracker ignores boxes below its low threshold (0.1) anyway
   app_model: models/weights/yolo11n-1280.onnx   # nano: about the accuracy of the small model at 1280 px, twice as fast
   benchmark:

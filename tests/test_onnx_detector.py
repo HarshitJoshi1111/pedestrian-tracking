@@ -25,3 +25,10 @@ def test_decode_keeps_boxes_whose_best_class_is_person():
     boxes, scores = decode(output, conf=0.1)
     assert boxes.tolist() == [[45, 40, 55, 60]]  # the second is a car, the third too unsure
     assert scores.tolist() == [0.9]
+
+
+def test_onnx_run_names():
+    from src.deploy import onnx_run_name
+
+    assert onnx_run_name("yolo11n.pt", 0.5, 1280) == "yolo11n-onnx-1280"
+    assert onnx_run_name("yolo11s.pt", 0.7, 1280) == "yolo11s-onnx-iou07-1280"

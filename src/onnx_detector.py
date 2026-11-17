@@ -4,7 +4,7 @@ Needs only onnxruntime, numpy and OpenCV (no PyTorch), which is what a deploymen
 Pre-processing: letterbox (keep the aspect ratio, pad with grey to the model's fixed input size).
 Post-processing: the model returns, for every candidate box, its centre, size and one score per class;
 a box is a person if "person" is its best class and the score passes the threshold; overlapping
-boxes are then reduced with non-maximum suppression, as in Ultralytics.
+boxes are then reduced with non-maximum suppression (IoU 0.5, the default of Ultralytics' predict).
 """
 from pathlib import Path
 
@@ -53,12 +53,23 @@ def decode(output: np.ndarray, conf: float, class_id: int = 0) -> tuple[np.ndarr
     return np.stack([cx - w / 2, cy - h / 2, cx + w / 2, cy + h / 2], axis=1), scores[keep]
 
 
+FAST_PROVIDERS = ("CUDAExecutionProvider", "CoreMLExecutionProvider")  # NVIDIA GPU, Apple GPU / Neural Engine
+
+
+def best_providers() -> list[str]:
+    """The fastest execution provider available on this machine, with the CPU as fallback for unsupported layers."""
+    import onnxruntime as ort
+
+    available = ort.get_available_providers()
+    return [p for p in FAST_PROVIDERS if p in available][:1] + ["CPUExecutionProvider"]
+
+
 class OnnxDetector:
-    def __init__(self, path: Path, conf: float = 0.1, iou: float = 0.7, max_det: int = 300,
+    def __init__(self, path: Path, conf: float = 0.1, iou: float = 0.5, max_det: int = 300,
                  providers: list[str] | None = None, class_id: int = 0):
         import onnxruntime as ort
 
-        self.session = ort.InferenceSession(str(path), providers=providers or ["CPUExecutionProvider"])
+        self.session = ort.InferenceSession(str(path), providers=providers or best_providers())
         model_input = self.session.get_inputs()[0]
         self.input_name = model_input.name
         self.height, self.width = model_input.shape[2], model_input.shape[3]

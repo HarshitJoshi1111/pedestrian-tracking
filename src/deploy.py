@@ -1,8 +1,9 @@
 """Stage 9: export the detectors to ONNX, check that nothing is lost, and measure speed.
 
     python -m src.deploy export      models/weights/<model>-<width>.onnx, fixed input size from params.yaml
-    python -m src.deploy detect      ONNX detections on the validation sequences (-> data/detections/<model>-onnx-<width>),
-                                     scored by python -m src.evaluate_det next to the PyTorch runs
+    python -m src.deploy detect      ONNX detections on the validation sequences (-> data/detections/<model>-onnx-...),
+                                     scored by python -m src.evaluate_det next to the PyTorch runs; with NMS IoU 0.5
+                                     (as PyTorch) to check that the export loses nothing, and with 0.7
     python -m src.deploy benchmark   time per frame for PyTorch (CPU, Apple GPU) and ONNX Runtime (CPU, Core ML)
                                      -> reports/benchmark.json, reports/benchmark.md
 
@@ -38,18 +39,30 @@ def export(cfg: dict) -> None:
         print(f"{name} -> {onnx_path(name, width)} ({onnx_path(name, width).stat().st_size / 1e6:.1f} MB)")
 
 
+def onnx_run_name(model: str, iou: float, width: int) -> str:
+    """'yolo11n-onnx-1280' with the default NMS threshold 0.5, 'yolo11n-onnx-iou07-1280' with 0.7."""
+    return f"{Path(model).stem}-onnx{'' if iou == 0.5 else f'-iou{iou:.1f}'.replace('.', '')}-{width}"
+
+
 def detect(cfg: dict, sequences: list[str]) -> None:
+    """On the CPU, so that the boxes can be compared with the PyTorch ones (Core ML may compute in half precision)."""
     width = cfg["imgsz"][1]
     for name in cfg["models"]:
-        detector = OnnxDetector(onnx_path(name, width), conf=cfg["conf"])
-        out = DETECTIONS / f"{Path(name).stem}-onnx-{width}"
-        for seq in sequences:
-            rows = []
-            for frame in range(1, read_seqinfo(RAW / seq / "seqinfo.ini").frames + 1):
-                boxes, scores = detector(cv2.imread(str(RAW / seq / "img1" / f"{frame:06d}.jpg")))
-                rows += [(frame, -1, x + 1, y + 1, w, h, s) for (x, y, w, h), s in zip(boxes, scores, strict=True)]
-            write_results(pd.DataFrame(rows, columns=RESULT_COLUMNS), out / f"{seq}.txt")
-            print(f"{out.name} {seq}: {len(rows)} boxes", flush=True)
+        for iou in cfg["nms_iou"]:
+            run_detector(OnnxDetector(onnx_path(name, width), conf=cfg["conf"], iou=iou, providers=["CPUExecutionProvider"]),
+                         DETECTIONS / onnx_run_name(name, iou, width), sequences)
+
+
+def run_detector(detector: OnnxDetector, out: Path, sequences: list[str]) -> None:
+    for seq in sequences:
+        if (out / f"{seq}.txt").exists():
+            continue  # cached already
+        rows = []
+        for frame in range(1, read_seqinfo(RAW / seq / "seqinfo.ini").frames + 1):
+            boxes, scores = detector(cv2.imread(str(RAW / seq / "img1" / f"{frame:06d}.jpg")))
+            rows += [(frame, -1, x + 1, y + 1, w, h, s) for (x, y, w, h), s in zip(boxes, scores, strict=True)]
+        write_results(pd.DataFrame(rows, columns=RESULT_COLUMNS), out / f"{seq}.txt")
+        print(f"{out.name} {seq}: {len(rows)} boxes", flush=True)
 
 
 def timed(run, frames: list[Path], warmup: int) -> dict:
@@ -86,7 +99,8 @@ def benchmark(cfg: dict) -> None:
         for provider in providers:
             label = f"ONNX Runtime {provider.replace('ExecutionProvider', '')}"
             try:
-                detector = OnnxDetector(onnx_path(name, width), conf=cfg["app_conf"], providers=[provider, "CPUExecutionProvider"])
+                fallback = [] if provider == "CPUExecutionProvider" else ["CPUExecutionProvider"]
+                detector = OnnxDetector(onnx_path(name, width), conf=cfg["app_conf"], providers=[provider, *fallback])
                 results.append({"model": name, "runtime": label, **timed(detector, frames, bench["warmup"])})
             except Exception as error:  # an execution provider may not support every operation
                 print(f"{name} {label} failed: {error}")

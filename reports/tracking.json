@@ -69,7 +69,7 @@
     "run": {
       "detector": "yolo11s-1280",
       "interpolate_gap": 0,
-      "ms_per_frame": 0.46,
+      "ms_per_frame": 0.45,
       "config": {
         "high_thresh": 0.4,
         "low_thresh": null,
@@ -409,7 +409,7 @@
     "run": {
       "detector": "yolo11n-1280",
       "interpolate_gap": 20,
-      "ms_per_frame": 0.51,
+      "ms_per_frame": 0.5,
       "config": {
         "high_thresh": 0.4,
         "low_thresh": 0.1,
@@ -495,6 +495,91 @@
       "detector": "yolo11n-mot17-1280",
       "interpolate_gap": 20,
       "ms_per_frame": 0.5,
+      "config": {
+        "high_thresh": 0.4,
+        "low_thresh": 0.1,
+        "new_track_thresh": null,
+        "match_thresh": 0.9,
+        "low_match_thresh": 0.5,
+        "tentative_match_thresh": 0.7,
+        "track_buffer": 30,
+        "fuse_score": true,
+        "min_box_area": 100,
+        "max_aspect": 1.6
+      }
+    }
+  },
+  "bytetrack+interp-nms07": {
+    "overall": {
+      "mota": 0.4434072662947339,
+      "motp": 0.7806243338091078,
+      "idf1": 0.45849143284953464,
+      "idp": 0.6116861890493054,
+      "idr": 0.36666213090216354,
+      "gt_boxes": 36745,
+      "matches": 19282,
+      "misses": 17463,
+      "false_positives": 2744,
+      "id_switches": 245,
+      "people": 145,
+      "mostly_tracked": 40,
+      "mostly_lost": 44,
+      "track_ids": 258
+    },
+    "per_sequence": {
+      "MOT17-02": {
+        "mota": 0.3505193477207901,
+        "motp": 0.7949988063094762,
+        "gt_boxes": 18581,
+        "matches": 7269,
+        "misses": 11312,
+        "false_positives": 693,
+        "id_switches": 63,
+        "people": 62,
+        "mostly_tracked": 8,
+        "mostly_lost": 30,
+        "idf1": 0.4288136231774856,
+        "idp": 0.7147701582516955,
+        "idr": 0.30628060922447664,
+        "track_ids": 86
+      },
+      "MOT17-09": {
+        "mota": 0.6024413145539906,
+        "motp": 0.7958339887022806,
+        "gt_boxes": 5325,
+        "matches": 4049,
+        "misses": 1276,
+        "false_positives": 774,
+        "id_switches": 67,
+        "people": 26,
+        "mostly_tracked": 15,
+        "mostly_lost": 2,
+        "idf1": 0.5007883326763894,
+        "idp": 0.5268505079825835,
+        "idr": 0.4771830985915493,
+        "track_ids": 52
+      },
+      "MOT17-10": {
+        "mota": 0.5118778721084196,
+        "motp": 0.7597715044183951,
+        "gt_boxes": 12839,
+        "matches": 7964,
+        "misses": 4875,
+        "false_positives": 1277,
+        "id_switches": 115,
+        "people": 57,
+        "mostly_tracked": 17,
+        "mostly_lost": 12,
+        "idf1": 0.4747282608695652,
+        "idp": 0.5671464127258955,
+        "idr": 0.40820936209985204,
+        "track_ids": 120
+      }
+    },
+    "run": {
+      "detector": "yolo11s-onnx-iou07-1280",
+      "interpolate_gap": 20,
+      "ms_per_frame": 0.54,
       "config": {
         "high_thresh": 0.4,
         "low_thresh": 0.1,
